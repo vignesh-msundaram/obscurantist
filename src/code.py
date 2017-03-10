@@ -81,18 +81,27 @@ class Obscurantist(ObscureBase):
             raise AttributeError("""'{0}' has no attribute '{1}'""".format(self.__class__, key))
         private, public = value, value
         if isinstance(value, bool):
-            public = not value
+            if random.randint(0, 1):
+                public = not value
+            else:
+                public = bool(value)
+        elif isinstance(value, str):
+            if "have" in value and random.randint(0, 1):
+                public = value.replace("have", "don't have")
+            if "know" in value and random.randint(0, 1):
+                public = value.replace("know", "don't know")
+            if "see" in value and random.randint(0, 1):
+                public = value.replace("see", "don't see")
         elif isinstance(value, (int, float)):
             public = value / 2
-        elif isinstance(value, str):
-            if "have" in value:
-                public = value.replace("have", "don't have")
-            if "know" in value:
-                public = value.replace("know", "don't know")
-            if "see" in value:
-                public = value.replace("see", "don't see")
-        elif isinstance(value, list):
-            public = random.choice(value)
+        elif isinstance(value, (list, dict)):
+            temp = value.copy()
+            random_indices_count = random.randint(1, len(temp)-1)
+            while random_indices_count > 0:
+                random_index = random.randint(0, random_indices_count)
+                del temp[random_index]
+                random_indices_count -= 1
+            public = temp
         elif isinstance(value, (datetime, date)):
             public = value - timedelta(days=random.randint(2, 4))
         self.set_private(key, private)

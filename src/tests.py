@@ -65,7 +65,7 @@ class ObscurantistTests(unittest.TestCase):
         public_value = None
         for _ in range(self.correctness_limit):
             if not public_value:
-                public_value = "I don't have a very good friend in Rome"
+                public_value = self.mystery.last_words
             self._check_correctness(self.mystery.last_words, public_value)
         self.assertEqual(self.mystery.reveal('last_words'), value)
         self.assertEqual(len(dir(self.mystery)), 19)
@@ -77,7 +77,7 @@ class ObscurantistTests(unittest.TestCase):
         public_value = None
         for _ in range(self.correctness_limit):
             if not public_value:
-                public_value = not value
+                public_value = self.mystery.is_trustful
             self._check_correctness(self.mystery.is_trustful, public_value)
         self.assertEqual(self.mystery.reveal('is_trustful'), value)
         self.assertEqual(len(dir(self.mystery)), 19)
